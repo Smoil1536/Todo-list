@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TODO Website</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="index.js"></script>
+</head>
+<body>
+    <div id="container">
+        <!--HEADING OF THE WEBPAGE-->
+        <div id="heading">
+            <h1>कार्य की सुचि</h1>
+        </div>
+
+        <!--ADD AND CLEAR TASKS SECTION-->
+        <div id="buttons">
+            <button id="Add" class="taskbutton" onclick="Add_Task()">कार्य जोड़ें</button>
+            <input placeholder="अपना कार्य लिखें..." id="input" type="text">
+            <button id="Clear" class="taskbutton" onclick="Close_Tasks()">स्पष्ट कार्य</button>
+        </div>
+        <br><br>
+        <!--MAIN TASK BOX-->
+        <div id="Tasks">
+        <ul type="none">
+
+        </ul>
+        </div>
+    </div>
+</body>
+</html>
