@@ -9,13 +9,13 @@ class Task{
 // Showing the tasks on loading
 window.onload = function () {
     let archive = {},
-        keys = Object.keys(localStorage),
+        keys = JSON.parse(localStorage.getItem("taskOrder")),
         check = "";
     
     for (let i = 0; i < keys.length; i++){
         archive[keys[i]] = JSON.parse(localStorage.getItem(keys[i]));
         let status = archive[keys[i]].status;
-        let task_id = archive[keys[i]].task_id;
+        let task_id = keys[i];
         let task = archive[keys[i]].value;
 
         if (status === "done")
@@ -24,7 +24,7 @@ window.onload = function () {
             check = "";
         const li_element = document.createElement("li");
         li_element.innerHTML = `<input class="check" type="checkbox" ${check}>
-                            <p class="task" data-task-id="${task_id}">${task}</p>
+                            <p class="task" data-task-id="${task_id}" contenteditable="false">${task}</p>
                             <i class="fa-solid fa-pencil edit-icon" onclick=""></i>
                             <i class="fa-solid fa-xmark remove-icon" onclick=""></i>`;
         document.querySelector("ul").appendChild(li_element);
@@ -33,6 +33,7 @@ window.onload = function () {
 // Events
 document.getElementById("clear-button").addEventListener("click", Clear_All);
 document.getElementById("add-button").addEventListener("click", Add_Task);
+
 document.querySelector("ul").addEventListener("change", function (event) {
     if (event.target && event.target.classList.contains("check")) {
         const p = event.target.nextElementSibling;
@@ -40,25 +41,34 @@ document.querySelector("ul").addEventListener("change", function (event) {
         Toggle(task_id);
     }
 });
+document.querySelector("ul").addEventListener("input", function (event) {
+    if(event.target && event.target.classList.contains("task")) {
+        const p = event.target;
+        let task_id = p.getAttribute("data-task-id");
+        const taskData = JSON.parse(localStorage.getItem(task_id));
+        taskData.value = p.innerHTML;
+        localStorage.setItem(task_id, JSON.stringify(taskData));
+    }
+})
+document.querySelector("ul").addEventListener("focusout", function (event) {
+    if(event.target && event.target.classList.contains("task")) {
+        event.target.setAttribute("contenteditable", "false");
+    }
+})
 document.querySelector("ul").addEventListener("click", function (event) {
     const li = event.target.parentElement;
     const task_id = li.children[1].getAttribute("data-task-id");
-
     if (event.target && event.target.classList.contains("remove-icon")) {
-        localStorage.removeItem(task_id);
+        let taskIDs = JSON.parse(localStorage.getItem("taskOrder"));
         li.style.display = "none";
+        taskIDs = taskIDs.filter(id => { return id !== task_id });
+        
+        localStorage.removeItem(task_id);
+        localStorage.setItem("taskOrder", JSON.stringify(taskIDs));
     }
     else if (event.target && event.target.classList.contains("edit-icon")) {
-        let task = prompt("Write your task: ");
-        if (task.length > 0) {
-            const taskData = JSON.parse(localStorage.getItem(task_id));
-            const status = taskData.status;
-            const newTask = new Task(task, status);
-            newTask.task_id = task_id;
-            
-            li.children[1].innerHTML = task;
-            localStorage.setItem(task_id, JSON.stringify(newTask));
-        }
+        li.children[1].setAttribute("contenteditable", "true");
+        li.children[1].focus();
     }
 });
 // function to add task
@@ -67,9 +77,16 @@ function Add_Task() {
     if (task.length > 0) {
         let new_task = new Task(task, "pending");
         const li_element = document.createElement("li");
-        localStorage.setItem(new_task.task_id, JSON.stringify(new_task));
+        let taskIDs = JSON.parse(localStorage.getItem("taskOrder")) || [];
+        let task_id = new_task.task_id;
+        delete new_task.task_id;
+
+        localStorage.setItem(task_id, JSON.stringify(new_task));
+        taskIDs.push(task_id);
+        localStorage.setItem("taskOrder", JSON.stringify(taskIDs));
+
         li_element.innerHTML = `<input class="check" type="checkbox">
-                                <p class="task" data-task-id="${new_task.task_id}">${task}</p>
+                                <p class="task" data-task-id="${task_id}" contenteditable="false">${task}</p>
                                 <i class="fa-solid fa-pencil edit-icon" onclick=""></i>
                                 <i class="fa-solid fa-xmark remove-icon" onclick=""></i>`;
         document.getElementById("input-field").value = "";
