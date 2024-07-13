@@ -1,0 +1,127 @@
+:root{
+    --color-blue: #289BDE;
+    --border-color: #0000FF;
+    --heading-color: #07B3C0;
+}
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html, body{
+    font-size: 1px;
+    scroll-behavior: smooth;
+}
+.container{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40rem;
+    padding: 32rem;
+    overflow: scroll;
+}
+header .heading{
+    font-size: 32rem;
+    color: var(--heading-color);
+    text-decoration: underline;
+}
+.controls-wrapper{
+    display: flex;
+    gap: 32rem;
+    align-items: center;
+}
+.main-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.buttons{
+    width: 100rem;
+    height: 40rem;
+    color: white;
+    border: none;
+    border-radius: 4rem;
+    background-color:var(--color-blue);
+    box-shadow: 0 2rem 4rem darkslategray;
+}
+button.buttons:active{
+    box-shadow: 0 0 2rem darkslategray;
+    transform: translateY(2rem);
+}
+input.task-input{
+    height: 40rem;
+    padding: 10rem;
+    width: 250rem;
+    font-size: 16rem;
+    font-family: sans-serif;
+    background-color: #EDEEF0;
+    border: none;
+}
+.tasks-wrapper{
+    margin-block-start: 16rem;
+    padding: 16rem;
+    box-shadow: 0 2px 4px darkslategray;
+    min-width: 400rem;  
+}
+.tasks-wrapper ul li{
+    display: flex;
+    gap: 24rem;
+    background-color: white;
+    padding: 8rem;
+}
+.tasks-wrapper ul li p{
+    width: 400rem;
+    white-space: nowrap;
+    color: rgb(41, 41, 41);
+    font-family: verdana;
+    font-size: 16rem;
+    overflow-x: scroll;
+}
+input[type="checkbox"]:checked + .task{
+    text-decoration: line-through;
+    color: rgb(95, 95, 95);
+}
+input[type="checkbox"]{
+    accent-color: var(--color-blue);
+    height: 20rem;
+    width: 20rem;
+}
+ul li .edit-icon{
+    color: var(--color-blue);
+    font-size: 18rem;
+    padding: 3rem;
+}
+ul li .remove-icon{
+    color: red;
+    font-size: 22rem;
+    padding: 3rem;
+}
+ul li .edit-icon:hover,
+ul li .remove-icon:hover{
+    background-color:rgb(219, 219, 219);
+    border-radius: 3rem;
+}
+
+
+@media only screen and (max-width: 480px){
+    html, body{
+        font-size: 0.8px;
+    }
+    .tasks-wrapper ul li p{
+        width: 240rem;
+    }
+    .controls-wrapper{
+        align-items: flex-end;
+    }
+}
+
+@media only screen and (max-width: 615px)
+and (min-width: 481px){
+    html, body{
+        font-size: 0.9px;
+    }
+    .tasks-wrapper ul li p{
+        width: 300rem;
+    }
+}
