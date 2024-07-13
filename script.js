@@ -1,3 +1,4 @@
+const ul = document.querySelector("ul");
 // Class to construct the values
 class Task{
     constructor(value, status) {
@@ -33,15 +34,14 @@ window.onload = function () {
 // Events
 document.getElementById("clear-button").addEventListener("click", Clear_All);
 document.getElementById("add-button").addEventListener("click", Add_Task);
-
-document.querySelector("ul").addEventListener("change", function (event) {
+ul.addEventListener("change", function (event) {
     if (event.target && event.target.classList.contains("check")) {
         const p = event.target.nextElementSibling;
         let task_id = p.getAttribute("data-task-id");
         Toggle(task_id);
     }
 });
-document.querySelector("ul").addEventListener("input", function (event) {
+ul.addEventListener("input", function (event) {
     if(event.target && event.target.classList.contains("task")) {
         const p = event.target;
         let task_id = p.getAttribute("data-task-id");
@@ -50,12 +50,12 @@ document.querySelector("ul").addEventListener("input", function (event) {
         localStorage.setItem(task_id, JSON.stringify(taskData));
     }
 })
-document.querySelector("ul").addEventListener("focusout", function (event) {
+ul.addEventListener("focusout", function (event) {
     if(event.target && event.target.classList.contains("task")) {
         event.target.setAttribute("contenteditable", "false");
     }
 })
-document.querySelector("ul").addEventListener("click", function (event) {
+ul.addEventListener("click", function (event) {
     const li = event.target.parentElement;
     const task_id = li.children[1].getAttribute("data-task-id");
     if (event.target && event.target.classList.contains("remove-icon")) {
